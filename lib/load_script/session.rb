@@ -11,7 +11,10 @@ module LoadScript
     include Capybara::DSL
     attr_reader :host
     def initialize(host = nil)
-      Capybara.default_driver = :poltergeist
+      options = {js_errors: false}
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, options)
+      end
       @host = host || "http://localhost:3000"
     end
 
